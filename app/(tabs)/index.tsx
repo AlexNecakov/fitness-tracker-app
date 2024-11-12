@@ -41,6 +41,8 @@ export default function Index() {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.text}>Set # 2/3</Text>
+            <Text style={styles.text}>Last  Current</Text>
             <View style={styles.imageContainer}>
                 <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
             </View>
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
+        fontSize: 20,
         color: '#ffff',
     },
     button: {
