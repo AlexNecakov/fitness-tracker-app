@@ -1,66 +1,42 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet, } from "react-native";
 
-import { Link } from 'expo-router'
-import * as ImagePicker from 'expo-image-picker'
-
-import ImageViewer from "@/components/ImageViewer"
-import Button from "@/components/Button";
 import IconButton from "@/components/IconButton";
-import CircleButton from "@/components/CircleButton";
 
-const PlaceholderImage = require('@/assets/images/background-image.png')
 
 export default function Index() {
-    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-    const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+    const [numPullUps, setNumPullUps] = useState(0);
 
-    const pickImageAsync = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
-            setShowAppOptions(true);
-        } else {
-            alert("You did not select any image.");
-        }
+    const onPlus = () => {
+        setNumPullUps(numPullUps + 1);
+    };
+    const onMinus = () => {
+        setNumPullUps(Math.max(0, numPullUps - 1));
     };
 
-    const onReset = () => {
-        setShowAppOptions(false);
-    };
-
-    const onAddSticker = () => {
-    };
-
-    const onSaveImageAsAsync = async () => {
-    };
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Set # 2/3</Text>
             <Text style={styles.text}>Last  Current</Text>
-            <View style={styles.imageContainer}>
-                <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
+            <View style={styles.optionsContainer}>
+                <View style={styles.optionsRow}>
+                    <Text style={styles.text}>Pull-Ups  5 </Text>
+                    <IconButton icon="minus" onPress={onMinus} ></IconButton>
+                    <Text style={styles.text}>{numPullUps}</Text>
+                    <IconButton icon="plus" onPress={onPlus} ></IconButton>
+                </View>
+                <View style={styles.optionsRow}>
+                    <Text style={styles.text}>S. Rows   5 -5+</Text>
+                </View>
+                <View style={styles.optionsRow}>
+                    <Text style={styles.text}>Dips      5 -5+</Text>
+                </View>
+                <View style={styles.optionsRow}>
+                    <Text style={styles.text}>Push-Ups  5 -5+</Text>
+                </View>
             </View>
-            {showAppOptions ? (
-                <View style={styles.optionsContainer}>
-                    <View style={styles.optionsRow}>
-                        <IconButton icon="refresh" label="Reset" onPress={onReset} />
-                        <CircleButton onPress={onAddSticker} />
-                        <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsAsync} />
-                    </View>
-                </View>
-            ) : (
-                <View style={styles.footerContainer}>
-                    <Button theme="primary" label='Choose a photo' onPress={pickImageAsync} />
-                    <Button label='Use this photo' onPress={() => setShowAppOptions(true)} />
-                </View>
-            )}
-        </View>
+        </View >
     );
 }
 
@@ -72,7 +48,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
-        fontSize: 20,
+        fontSize: 40,
         color: '#ffff',
     },
     button: {
@@ -98,6 +74,6 @@ const styles = StyleSheet.create({
     },
     optionsRow: {
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
     }
 });
