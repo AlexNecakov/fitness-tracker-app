@@ -5,10 +5,11 @@ import IconButton from "@/components/IconButton";
 
 type Props = {
     label: string;
+    numReps: number;
+    setNumReps: (numReps: number) => void;
 };
 
-export default function ExerciseRow({ label }: Props) {
-    const [numReps, setNumReps] = useState(0);
+export default function ExerciseRow({ label, numReps, setNumReps }: Props) {
 
     const onPlus = () => {
         setNumReps(numReps + 1);
