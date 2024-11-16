@@ -9,7 +9,7 @@ type Props = {
     setNumReps: (numReps: number) => void;
 };
 
-export default function ExerciseRow({ label, lastNumReps, numReps, setNumReps }: Props) {
+export default function ResultsRow({ label, lastNumReps, numReps, setNumReps }: Props) {
 
     const onPlus = () => {
         setNumReps(numReps + 1);

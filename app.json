@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "test-expo",
+    "name": "onemorefitness",
     "slug": "test-expo",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.alexnecakov.testexpo"
+      "bundleIdentifier": "com.alexnecakov.onemorefitness"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alexnecakov.testexpo"
+      "package": "com.alexnecakov.onemorefitness"
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +29,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
@@ -38,6 +39,7 @@
       "eas": {
         "projectId": "d3e89449-2be7-4b43-9a28-26b395ccd3bd"
       }
-    }
+    },
+    "owner": "alexnecakov"
   }
 }
