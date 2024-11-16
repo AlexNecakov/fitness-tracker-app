@@ -1,37 +1,25 @@
 import { Text, View, StyleSheet, } from "react-native";
 
-import IconButton from "@/components/IconButton";
-
 type Props = {
     label: string;
-    lastNumReps: number;
-    numReps: number;
-    setNumReps: (numReps: number) => void;
+    numReps: number[];
 };
 
-export default function ResultsRow({ label, lastNumReps, numReps, setNumReps }: Props) {
-
-    const onPlus = () => {
-        setNumReps(numReps + 1);
-    };
-    const onMinus = () => {
-        setNumReps(Math.max(0, numReps - 1));
-    };
-
+export default function ResultsRow({ label, numReps }: Props) {
 
     return (
         <View style={styles.entriesRow}>
             <View style={styles.entriesCell}>
                 <Text style={styles.text}>{label}</Text>
             </View>
-            <View style={styles.entriesCell}>
-                <Text style={styles.text}>{lastNumReps}</Text>
-            </View>
-            <View style={styles.entriesCell}>
-                <IconButton icon="minus" onPress={onMinus} ></IconButton>
-                <Text style={styles.text}>{numReps}</Text>
-                <IconButton icon="plus" onPress={onPlus} ></IconButton>
-            </View>
+            {numReps.map((rep, index) =>
+            (
+                <View key={index} style={styles.entriesCell}>
+                    <Text style={styles.text}>{rep}
+                    </Text>
+                </View>
+            )
+            )}
         </View>
     );
 }
