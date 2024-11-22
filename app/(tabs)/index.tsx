@@ -9,6 +9,15 @@ import Button from "@/components/Button";
 
 export default function Index() {
 
+    enum screenStates{
+        loading = 0,
+        enterSet = 10,
+        rest = 20, 
+        results = 30,
+    }
+
+    const [screenState, setScreenState] = useState<screenStates>(screenStates.loading);
+
     const [db, setDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined);
     const [workoutId, setWorkoutId] = useState<number>(0);
     const [numSet, setNumSet] = useState<number>(1);
@@ -60,6 +69,9 @@ export default function Index() {
                 <Text style={styles.text}>Loading...</Text>;
             </View >
         </View >
+    }
+    else{
+        
     }
 
     const onSubmitSet = () => {
