@@ -115,8 +115,28 @@ export default function Index() {
         return (
             <View style={styles.container}>
                 <View style={styles.entriesContainer}>
-                    <Text style={styles.text}>Set # {numSet}/3</Text>
-                    <Text style={styles.text}>Last  Current</Text>
+                    <View style={styles.entriesRow}>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}></Text>
+                        </View>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}>Set # {numSet}/3</Text>
+                        </View>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}></Text>
+                        </View>
+                    </View>
+                    <View style= {styles.entriesRow}>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}></Text>
+                        </View>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}>Last</Text>
+                        </View>
+                        <View style = {styles.entriesCell}>
+                            <Text style={styles.text}>Current</Text>
+                        </View>
+                    </View>
                     <ExerciseRow label="Pull-Ups" lastNumReps={lastNumPullUps} numReps={numPullUps} setNumReps={setNumPullUps}></ExerciseRow>
                     <ExerciseRow label="S. Rows" lastNumReps={lastNumRows} numReps={numRows} setNumReps={setNumRows}></ExerciseRow>
                     <ExerciseRow label="Dips" lastNumReps={lastNumDips} numReps={numDips} setNumReps={setNumDips}></ExerciseRow>
@@ -148,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
-        fontSize: 40,
+        fontSize: 22,
         color: '#ffff',
     },
     entriesContainer: {
@@ -163,5 +183,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         padding: 20,
+        width: '33%',
     }
 });

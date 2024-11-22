@@ -38,7 +38,7 @@ export default function ExerciseRow({ label, lastNumReps, numReps, setNumReps }:
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 40,
+        fontSize: 22,
         color: '#ffff',
     },
     entriesRow: {
@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         padding: 20,
-    }
+        width: '33%',
+    },
 });
