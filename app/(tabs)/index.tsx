@@ -10,13 +10,13 @@ import Button from "@/components/Button";
 export default function Index() {
 
     enum screenStates{
-        loading = 0,
-        enterSet = 10,
-        rest = 20, 
-        results = 30,
+        SCREEN_loading = 0,
+        SCREEN_enterSet = 10,
+        SCREEN_rest = 20, 
+        SCREEN_results = 30,
     }
 
-    const [screenState, setScreenState] = useState<screenStates>(screenStates.loading);
+    const [screenState, setScreenState] = useState<screenStates>(screenStates.SCREEN_loading);
 
     const [db, setDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined);
     const [workoutId, setWorkoutId] = useState<number>(0);
@@ -57,23 +57,13 @@ export default function Index() {
                         console.log('No workoutId found, starting at 1');
                         setWorkoutId(0);
                     }
+                    setScreenState(screenStates.SCREEN_enterSet);
                 }
             } catch (error) { console.error(error); }
         };
         fetchData();
     }, []); // Empty dependency array means this runs once on component mount 
-    if (!db) {
-        return
-        <View style={styles.container}>
-            <View style={styles.entriesContainer}>
-                <Text style={styles.text}>Loading...</Text>;
-            </View >
-        </View >
-    }
-    else{
-        
-    }
-
+    
     const onSubmitSet = () => {
         try {
             db.runSync(`INSERT INTO lifts (workoutId, dateTime, numSet, lift, numReps) VALUES ($workoutId, datetime(), $numSet, 'pullups', $numPullUps)`, { $workoutId: workoutId, $numSet: numSet, $numPullUps: numPullUps });
@@ -115,6 +105,7 @@ export default function Index() {
                 }
                 setPushUpsArray(newPushUpsArray);
 
+                setScreenState(screenStates.SCREEN_results);
             }
         }
         catch (error) {
@@ -123,7 +114,15 @@ export default function Index() {
 
     };
 
-    if (numSet < 4) {
+    if (screenState == screenStates.SCREEN_loading) {
+        return
+        <View style={styles.container}>
+            <View style={styles.entriesContainer}>
+                <Text style={styles.text}>Loading...</Text>;
+            </View >
+        </View >
+    }
+    else if (screenState == screenStates.SCREEN_enterSet) {
         return (
             <View style={styles.container}>
                 <View style={styles.entriesContainer}>
@@ -158,7 +157,7 @@ export default function Index() {
             </View >
         );
     }
-    else {
+    else if(screenState == screenStates.SCREEN_results) {
         return (
             <View style={styles.container}>
                 <View style={styles.entriesContainer}>
@@ -169,6 +168,14 @@ export default function Index() {
                 </View>
             </View >
         );
+    }
+    else {
+        return
+        <View style={styles.container}>
+            <View style={styles.entriesContainer}>
+                <Text style={styles.text}>Error</Text>;
+            </View >
+        </View >
     }
 }
 
