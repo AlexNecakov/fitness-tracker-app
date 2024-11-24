@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, } from "react-native";
+import { Text, View, StyleSheet, ScrollView} from "react-native";
 
 type Props = {
     label: string;
@@ -8,19 +8,21 @@ type Props = {
 export default function ResultsRow({ label, numReps }: Props) {
 
     return (
-        <View style={styles.entriesRow}>
-            <View style={styles.entriesCell}>
-                <Text style={styles.text}>{label}</Text>
-            </View>
-            {numReps.map((rep, index) =>
-            (
-                <View key={index} style={styles.entriesCell}>
-                    <Text style={styles.text}>{rep}
-                    </Text>
+            <ScrollView style={styles.scrollView}>
+                <View style={styles.entriesRow}>
+                    <View style={styles.entriesCell}>
+                        <Text style={styles.text}>{label}</Text>
+                    </View>
+                    {numReps.map((rep, index) =>
+                    (
+                        <View key={index} style={styles.entriesCell}>
+                            <Text style={styles.text}>{rep}
+                            </Text>
+                        </View>
+                    )
+                    )}
                 </View>
-            )
-            )}
-        </View>
+            </ScrollView>
     );
 }
 
@@ -31,11 +33,16 @@ const styles = StyleSheet.create({
     },
     entriesRow: {
         alignItems: 'center',
+        justifyContent: "center",
         flexDirection: 'row',
     },
     entriesCell: {
         alignItems: 'center',
+        justifyContent: "center",
         flexDirection: 'row',
         padding: 20,
-    }
+    },
+    scrollView:{
+        height: "100%",
+    },
 });

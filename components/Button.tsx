@@ -14,7 +14,7 @@ export default function Button({ label, theme, onPress }: Props) {
                 <Pressable
                     style={[styles.button, { backgroundColor: '#fff' }]}
                     onPress={onPress}>
-                    <FontAwesome name="picture-o" size={18} color='#25292e' style={styles.buttonIcon} />
+                    <FontAwesome name="arrow-right" size={35} color='#25292e' style={styles.buttonIcon} />
                     <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
                 </Pressable>
             </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         paddingRight: 8,
     },
     buttonLabel: {
-        color: '#fff',
-        fontSize: 16,
+        color: '#25292e',
+        fontSize: 24,
     },
 });

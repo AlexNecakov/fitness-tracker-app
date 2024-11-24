@@ -4,12 +4,11 @@ import IconButton from "@/components/IconButton";
 
 type Props = {
     label: string;
-    lastNumReps: number;
     numReps: number;
     setNumReps: (numReps: number) => void;
 };
 
-export default function ExerciseRow({ label, lastNumReps, numReps, setNumReps }: Props) {
+export default function ExerciseRow({ label, numReps, setNumReps }: Props) {
 
     const onPlus = () => {
         setNumReps(numReps + 1);
@@ -25,9 +24,6 @@ export default function ExerciseRow({ label, lastNumReps, numReps, setNumReps }:
                 <Text style={styles.text}>{label}</Text>
             </View>
             <View style={styles.entriesCell}>
-                <Text style={styles.text}>{lastNumReps}</Text>
-            </View>
-            <View style={styles.entriesCell}>
                 <IconButton icon="minus" onPress={onMinus} ></IconButton>
                 <Text style={styles.text}>{numReps}</Text>
                 <IconButton icon="plus" onPress={onPlus} ></IconButton>
@@ -38,17 +34,19 @@ export default function ExerciseRow({ label, lastNumReps, numReps, setNumReps }:
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 22,
+        fontSize: 40,
         color: '#ffff',
     },
     entriesRow: {
         alignItems: 'center',
+        justifyContent: "center",
         flexDirection: 'row',
     },
     entriesCell: {
         alignItems: 'center',
+        justifyContent: "center",
         flexDirection: 'row',
         padding: 20,
-        width: '33%',
+        width: '50%',
     },
 });

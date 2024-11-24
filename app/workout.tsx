@@ -22,7 +22,7 @@ export default function Index() {
         screenStates.SCREEN_setup_Workout,
     );
 
-    const [targetSets, setTargetSets] = useState<number | undefined>(3);
+    const [targetSets, setTargetSets] = useState<number | undefined>(1);
     const [bodyWeight, setBodyWeight] = useState<number | undefined>(undefined);
 
     const [db, setDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined);
@@ -143,8 +143,6 @@ export default function Index() {
                             <View style={styles.entriesCell}>
                                 <Picker
                                     style={styles.pickerStyles}
-                                    itemStyle={styles.pickerText}
-                                    numberOfLines= {1}
                                     selectedValue={targetSets}
                                     onValueChange={(itemValue, itemIndex) =>
                                         setTargetSets(itemValue)
@@ -163,7 +161,9 @@ export default function Index() {
                             </View>
                         </View>
                         <View style={styles.entriesRow}>
-                            <Button label="Start Workout" theme="primary" onPress={onStartWorkout}></Button>
+                            <Link href="/workout">
+                                <Button label="Start Workout" theme="primary" onPress={onStartWorkout}></Button>
+                            </Link>
                         </View>
                     </View>
                 </View>
@@ -213,9 +213,7 @@ export default function Index() {
                             setNumReps={setNumPushUps}
                         >
                         </ExerciseRow>
-                        <View style={styles.entriesRow}>
-                            <Button label="Submit Set" theme="primary" onPress={onSubmitSet}></Button>
-                        </View>
+                        <Button label="Submit Set" theme="primary" onPress={onSubmitSet}></Button>
                     </View>
                 </View>
             </SafeAreaView>
@@ -258,17 +256,14 @@ const styles = StyleSheet.create({
         color: "#ffff",
     },
     entriesContainer: {
-        flex: 1,
     },
     entriesRow: {
         alignItems: "center",
-        justifyContent: "center",
         flexDirection: "row",
         padding: 20,
     },
     entriesCell: {
         alignItems: "center",
-        justifyContent: "center",
         flexDirection: "row",
         padding: 15,
     },
@@ -276,10 +271,6 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: "center",
         backgroundColor: "#ffff",
-        color: "#25292e",
-    },
-    pickerText: {
-        fontSize: 22,
         color: "#25292e",
     },
 });
