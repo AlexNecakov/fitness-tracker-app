@@ -269,8 +269,6 @@ const styles = StyleSheet.create({
         color: "#ffff",
     },
     entriesContainer: {
-        position: "absolute",
-        bottom: 80,
     },
     entriesRow: {
         alignItems: "center",
