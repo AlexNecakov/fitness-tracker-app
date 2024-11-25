@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabaseSync('local_storage.db')
 
-const getUsers = (setUserFunc) => {
+const getWorkout = (setUserFunc) => {
     db.transaction(
         tx => {
             tx.executeSql(
@@ -18,7 +18,7 @@ const getUsers = (setUserFunc) => {
     );
 }
 
-const insertUser = (userName, successFunc) => {
+const insertSet = (userName, successFunc) => {
     db.transaction(tx => {
         tx.executeSql('insert into users (name) values (?)', [userName]);
     },
@@ -46,28 +46,23 @@ const setupDatabaseAsync = async () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'create table if not exists users (id integer primary key not null, name text);'
+                `CREATE TABLE IF NOT EXISTS lifts (
+            id INTEGER PRIMARY KEY NOT NULL, 
+            workoutId INTEGER NOT NULL, 
+            dateTime INTEGER NOT NULL, 
+            set INTEGER NOT NULL, 
+            lift TEXT NOT NULL, 
+            numReps INTEGER
+        );`
             );
         },
             (_, error) => { console.log("db error creating tables"); console.log(error); reject(error) },
             (_, success) => { resolve(success) }
         )
-        db.execSync(
-            `CREATE TABLE IF NOT EXISTS lifts (
-            id INTEGER PRIMARY KEY NOT NULL, 
-            workoutId INTEGER NOT NULL, 
-            dateTime INTEGER NOT NULL, 
-            numSet INTEGER NOT NULL, 
-            lift TEXT NOT NULL, 
-            numReps INTEGER
-        );`
-
-        );
-
     })
 }
 
-const setupUsersAsync = async () => {
+const setupLiftsAsync = async () => {
     return new Promise((resolve, _reject) => {
         db.transaction(tx => {
             tx.executeSql('insert into users (id, name) values (?,?)', [1, "john"]);
@@ -79,9 +74,9 @@ const setupUsersAsync = async () => {
 }
 
 export const database = {
-    getUsers,
-    insertUser,
     setupDatabaseAsync,
-    setupUsersAsync,
     dropDatabaseTablesAsync,
+    setupLiftsAsync,
+    getWorkout,
+    insertSet,
 }
