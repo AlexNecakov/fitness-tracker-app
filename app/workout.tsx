@@ -8,6 +8,7 @@ import * as SQLite from "expo-sqlite";
 import ExerciseRow from "@/components/ExerciseRow";
 import ResultsRow from "@/components/ResultsRow";
 import Button from "@/components/Button";
+import * as Lifts from "@/constants/Lifts";
 
 export default function Index() {
     enum screenStates {
@@ -22,7 +23,7 @@ export default function Index() {
         screenStates.SCREEN_setup_Workout,
     );
 
-    const [targetSets, setTargetSets] = useState<number | undefined>(1);
+    const [targetSets, setTargetSets] = useState<number | undefined>(3);
     const [bodyWeight, setBodyWeight] = useState<number | undefined>(undefined);
 
     const [db, setDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined);
@@ -54,10 +55,8 @@ export default function Index() {
                     );
                     if (maxWorkOutIdResult.length > 0) {
                         const maxWorkOutId = maxWorkOutIdResult[0].maxId || 0;
-                        console.log("maxWorkOutId:", maxWorkOutId);
                         setWorkoutId(maxWorkOutId + 1);
                     } else {
-                        console.log("No workoutId found, starting at 1");
                         setWorkoutId(0);
                     }
                     setScreenState(screenStates.SCREEN_setup_Workout);
@@ -126,45 +125,48 @@ export default function Index() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <View style={styles.entriesContainer}>
-                        <Text style={styles.text}>Loading...</Text>;
-                    </View>
+                    <Text style={styles.text}>Loading...</Text>;
                 </View>
             </SafeAreaView>);
     } else if (screenState == screenStates.SCREEN_setup_Workout) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <View style={styles.entriesContainer}>
-                        <View style={styles.entriesRow}>
-                            <View style={styles.entriesCell}>
-                                <Text style={styles.text}>Target Sets:</Text>
-                            </View>
-                            <View style={styles.entriesCell}>
-                                <Picker
-                                    style={styles.pickerStyles}
-                                    selectedValue={targetSets}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        setTargetSets(itemValue)
-                                    }>
-                                    <Picker.Item label="1" value="1" />
-                                    <Picker.Item label="2" value="2" />
-                                    <Picker.Item label="3" value="3" />
-                                    <Picker.Item label="4" value="4" />
-                                    <Picker.Item label="5" value="5" />
-                                    <Picker.Item label="6" value="6" />
-                                    <Picker.Item label="7" value="7" />
-                                    <Picker.Item label="8" value="8" />
-                                    <Picker.Item label="9" value="9" />
-                                    <Picker.Item label="10" value="10" />
-                                </Picker>
-                            </View>
+                    <View style={styles.entriesRow}>
+                        <View style={styles.entriesCell}>
+                            <Text style={{ fontSize: 30, color: '#ffff', alignContent: "center", justifyContent: "center" }}>What's Today's Workout?</Text>
                         </View>
-                        <View style={styles.entriesRow}>
-                            <Link href="/workout">
-                                <Button label="Start Workout" theme="primary" onPress={onStartWorkout}></Button>
-                            </Link>
+                    </View>
+                    <View style={styles.entriesRow}>
+                        <View style={styles.entriesCell}>
+                            <Text style={styles.text}>Target Sets:</Text>
                         </View>
+                        <View style={styles.entriesCell}>
+                            <Picker
+                                style={styles.pickerStyles}
+                                itemStyle={styles.pickerText}
+                                numberOfLines={1}
+                                selectedValue={targetSets}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setTargetSets(itemValue)
+                                }>
+                                <Picker.Item label="1" value="1" />
+                                <Picker.Item label="2" value="2" />
+                                <Picker.Item label="3" value="3" />
+                                <Picker.Item label="4" value="4" />
+                                <Picker.Item label="5" value="5" />
+                                <Picker.Item label="6" value="6" />
+                                <Picker.Item label="7" value="7" />
+                                <Picker.Item label="8" value="8" />
+                                <Picker.Item label="9" value="9" />
+                                <Picker.Item label="10" value="10" />
+                            </Picker>
+                        </View>
+                    </View>
+                    <View style={styles.entriesRow}>
+                        <Link href="/workout" asChild>
+                            <Button label="Start Workout" theme="primary" onPress={onStartWorkout}></Button>
+                        </Link>
                     </View>
                 </View>
             </SafeAreaView>);
@@ -172,48 +174,48 @@ export default function Index() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <View style={styles.entriesContainer}>
-                        <View style={styles.entriesRow}>
-                            <View style={styles.entriesCell}>
-                                <Text style={styles.text}></Text>
-                            </View>
-                            <View style={styles.entriesCell}>
-                                <Text style={styles.text}>Set # {numSet}/{targetSets}</Text>
-                            </View>
-                            <View style={styles.entriesCell}>
-                                <Text style={styles.text}></Text>
-                            </View>
+                    <View style={styles.entriesRow}>
+                        <View style={styles.entriesCell}>
+                            <Text style={styles.text}></Text>
                         </View>
-                        <View style={styles.entriesRow}>
-                            <View style={styles.entriesCell}>
-                                <Text style={styles.text}></Text>
-                            </View>
+                        <View style={styles.entriesCell}>
+                            <Text style={styles.text}>Set # {numSet}/{targetSets}</Text>
                         </View>
-                        <ExerciseRow
-                            label="Pull-Ups"
-                            numReps={numPullUps}
-                            setNumReps={setNumPullUps}
-                        >
-                        </ExerciseRow>
-                        <ExerciseRow
-                            label="S. Rows"
-                            numReps={numRows}
-                            setNumReps={setNumRows}
-                        >
-                        </ExerciseRow>
-                        <ExerciseRow
-                            label="Dips"
-                            numReps={numDips}
-                            setNumReps={setNumDips}
-                        >
-                        </ExerciseRow>
-                        <ExerciseRow
-                            label="Push-Ups"
-                            numReps={numPushUps}
-                            setNumReps={setNumPushUps}
-                        >
-                        </ExerciseRow>
-                        <Button label="Submit Set" theme="primary" onPress={onSubmitSet}></Button>
+                        <View style={styles.entriesCell}>
+                            <Text style={styles.text}></Text>
+                        </View>
+                    </View>
+                    <View style={styles.entriesRow}>
+                        <View style={styles.entriesCell}>
+                            <Text style={styles.text}></Text>
+                        </View>
+                    </View>
+                    <ExerciseRow
+                        liftId={1}
+                        numReps={numPullUps}
+                        setNumReps={setNumPullUps}
+                    >
+                    </ExerciseRow>
+                    <ExerciseRow
+                        liftId={2}
+                        numReps={numRows}
+                        setNumReps={setNumRows}
+                    >
+                    </ExerciseRow>
+                    <ExerciseRow
+                        liftId={3}
+                        numReps={numDips}
+                        setNumReps={setNumDips}
+                    >
+                    </ExerciseRow>
+                    <ExerciseRow
+                        liftId={4}
+                        numReps={numPushUps}
+                        setNumReps={setNumPushUps}
+                    >
+                    </ExerciseRow>
+                    <View style={styles.entriesRow}>
+                        <Button label="Complete Set" theme="primary" onPress={onSubmitSet}></Button>
                     </View>
                 </View>
             </SafeAreaView>
@@ -222,12 +224,10 @@ export default function Index() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <View style={styles.entriesContainer}>
-                        <ResultsRow label="Pull-Ups" numReps={pullUpsArray} />
-                        <ResultsRow label="Rows" numReps={rowsArray} />
-                        <ResultsRow label="Dips" numReps={dipsArray} />
-                        <ResultsRow label="Push-Ups" numReps={pushUpsArray} />
-                    </View>
+                    <ResultsRow label="Pull-Ups" numReps={pullUpsArray} />
+                    <ResultsRow label="Rows" numReps={rowsArray} />
+                    <ResultsRow label="Dips" numReps={dipsArray} />
+                    <ResultsRow label="Push-Ups" numReps={pushUpsArray} />
                 </View>
             </SafeAreaView>
         );
@@ -235,9 +235,7 @@ export default function Index() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <View style={styles.entriesContainer}>
-                        <Text style={styles.text}>Error</Text>;
-                    </View>
+                    <Text style={styles.text}>Error</Text>;
                 </View>
             </SafeAreaView>
         );
@@ -255,15 +253,15 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: "#ffff",
     },
-    entriesContainer: {
-    },
     entriesRow: {
         alignItems: "center",
+        justifyContent: "center",
         flexDirection: "row",
         padding: 20,
     },
     entriesCell: {
         alignItems: "center",
+        justifyContent: "center",
         flexDirection: "row",
         padding: 15,
     },
@@ -271,6 +269,10 @@ const styles = StyleSheet.create({
         width: '50%',
         justifyContent: "center",
         backgroundColor: "#ffff",
+        color: "#25292e",
+    },
+    pickerText: {
+        fontSize: 22,
         color: "#25292e",
     },
 });
