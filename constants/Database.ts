@@ -5,40 +5,6 @@ const db = SQLite.openDatabaseSync('local_storage.db');
 interface Workout {
     id: number;
 }
-
-// Define the type for setUserFunc
-type SetWorkoutFunc = (workouts: Workout[]) => void;
-
-const getWorkout = async (setWorkoutFunc: SetWorkoutFunc): Promise<void> => {
-    try {
-        const result = await db.execAsync('select * from users');
-        setWorkoutFunc(result.rows._array as Workout[]);
-    } catch (error) {
-        console.log("db error load users");
-        console.log(error);
-    }
-};
-
-const insertSet = async (userName: string, successFunc: () => void): Promise<void> => {
-    try {
-        await db.execAsync('insert into lifts values (?)');
-        successFunc();
-    } catch (error) {
-        console.log("db error insertSet");
-        console.log(error);
-    }
-};
-
-const dropDatabaseTablesAsync = async (): Promise<void> => {
-    try {
-        await db.execAsync('drop table users');
-        console.log("Dropped users table");
-    } catch (error) {
-        console.log("error dropping users table");
-        console.log(error);
-    }
-};
-
 const setupDatabaseAsync = async (): Promise<void> => {
     try {
         await db.execAsync(
@@ -47,7 +13,7 @@ const setupDatabaseAsync = async (): Promise<void> => {
                 workoutId INTEGER NOT NULL, 
                 dateTime INTEGER NOT NULL, 
                 set INTEGER NOT NULL, 
-                lift TEXT NOT NULL, 
+                liftId INTEGER NOT NULL, 
                 numReps INTEGER
             );`
         );
@@ -58,12 +24,41 @@ const setupDatabaseAsync = async (): Promise<void> => {
     }
 };
 
-const setupLiftsAsync = async (): Promise<void> => {
+const dropDatabaseTablesAsync = async (): Promise<void> => {
     try {
-        await db.execAsync('insert into users (id, name) values (?,?)');
-        console.log("Setup lifts complete");
+        await db.execAsync(`DROP TABLE lifts`);
+        console.log("Dropped lifts table");
     } catch (error) {
-        console.log("db error insertUser");
+        console.log("error dropping lifts table");
+        console.log(error);
+    }
+};
+
+const insertSet = async (workoutId: number, set: number, liftId: number, numReps: number, successFunc: () => void): Promise<void> => {
+    try {
+        await db.runAsync(`INSERT INTO lifts (workoutId, dateTime, numSet, lift, numReps) VALUES ($workoutId, datetime(), $numSet, $lift, $numReps)`,
+            {
+                $workoutId: workoutId,
+                $numSet: set,
+                $lift: liftId,
+                $numReps: numReps,
+            });
+        successFunc();
+    } catch (error) {
+        console.log("db error insertSet");
+        console.log(error);
+    }
+};
+
+// Define the type for setUserFunc
+type SetWorkoutFunc = (workouts: Workout[]) => void;
+
+const getWorkout = async (setWorkoutFunc: SetWorkoutFunc): Promise<void> => {
+    try {
+        const result = await db.execAsync('select * from users');
+        setWorkoutFunc(result.rows._array as Workout[]);
+    } catch (error) {
+        console.log("db error load users");
         console.log(error);
     }
 };
