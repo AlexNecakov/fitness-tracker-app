@@ -1,11 +1,10 @@
-import { Stack } from 'expo-router';
-import { useDatabaseContext } from '@/hooks/useDatabaseContext';
+import { LiftsContextProvider } from '@/hooks/useDatabaseContext';
 
 export default function Layout() {
 
     return (
-        <useDatabaseContext>
+        <LiftsContextProvider >
             <Stack />
-        </useDatabaseContext>);
+        </LiftsContextProvider >);
 }
 

@@ -1,77 +1,72 @@
 import * as SQLite from "expo-sqlite";
 
-const db = SQLite.openDatabaseSync('local_storage.db')
+const db = SQLite.openDatabaseSync('local_storage.db');
 
-const getWorkout = (setUserFunc) => {
-    db.transaction(
-        tx => {
-            tx.executeSql(
-                'select * from users',
-                [],
-                (_, { rows: { _array } }) => {
-                    setUserFunc(_array)
-                }
-            );
-        },
-        (t, error) => { console.log("db error load users"); console.log(error) },
-        (_t, _success) => { console.log("loaded users") }
-    );
+interface Workout {
+    id: number;
 }
 
-const insertSet = (userName, successFunc) => {
-    db.transaction(tx => {
-        tx.executeSql('insert into users (name) values (?)', [userName]);
-    },
-        (t, error) => { console.log("db error insertUser"); console.log(error); },
-        (t, success) => { successFunc() }
-    )
-}
+// Define the type for setUserFunc
+type SetWorkoutFunc = (workouts: Workout[]) => void;
 
-const dropDatabaseTablesAsync = async () => {
-    return new Promise((resolve, reject) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'drop table users',
-                [],
-                (_, result) => { resolve(result) },
-                (_, error) => {
-                    console.log("error dropping users table"); reject(error)
-                }
-            )
-        })
-    })
-}
+const getWorkout = async (setWorkoutFunc: SetWorkoutFunc): Promise<void> => {
+    try {
+        const result = await db.execAsync('select * from users');
+        setWorkoutFunc(result.rows._array as Workout[]);
+    } catch (error) {
+        console.log("db error load users");
+        console.log(error);
+    }
+};
 
-const setupDatabaseAsync = async () => {
-    return new Promise((resolve, reject) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS lifts (
-            id INTEGER PRIMARY KEY NOT NULL, 
-            workoutId INTEGER NOT NULL, 
-            dateTime INTEGER NOT NULL, 
-            set INTEGER NOT NULL, 
-            lift TEXT NOT NULL, 
-            numReps INTEGER
-        );`
-            );
-        },
-            (_, error) => { console.log("db error creating tables"); console.log(error); reject(error) },
-            (_, success) => { resolve(success) }
-        )
-    })
-}
+const insertSet = async (userName: string, successFunc: () => void): Promise<void> => {
+    try {
+        await db.execAsync('insert into lifts values (?)');
+        successFunc();
+    } catch (error) {
+        console.log("db error insertSet");
+        console.log(error);
+    }
+};
 
-const setupLiftsAsync = async () => {
-    return new Promise((resolve, _reject) => {
-        db.transaction(tx => {
-            tx.executeSql('insert into users (id, name) values (?,?)', [1, "john"]);
-        },
-            (t, error) => { console.log("db error insertUser"); console.log(error); resolve() },
-            (t, success) => { resolve(success) }
-        )
-    })
-}
+const dropDatabaseTablesAsync = async (): Promise<void> => {
+    try {
+        await db.execAsync('drop table users');
+        console.log("Dropped users table");
+    } catch (error) {
+        console.log("error dropping users table");
+        console.log(error);
+    }
+};
+
+const setupDatabaseAsync = async (): Promise<void> => {
+    try {
+        await db.execAsync(
+            `CREATE TABLE IF NOT EXISTS lifts (
+                id INTEGER PRIMARY KEY NOT NULL, 
+                workoutId INTEGER NOT NULL, 
+                dateTime INTEGER NOT NULL, 
+                set INTEGER NOT NULL, 
+                lift TEXT NOT NULL, 
+                numReps INTEGER
+            );`
+        );
+        console.log("Database setup complete");
+    } catch (error) {
+        console.log("db error creating tables");
+        console.log(error);
+    }
+};
+
+const setupLiftsAsync = async (): Promise<void> => {
+    try {
+        await db.execAsync('insert into users (id, name) values (?,?)');
+        console.log("Setup lifts complete");
+    } catch (error) {
+        console.log("db error insertUser");
+        console.log(error);
+    }
+};
 
 export const database = {
     setupDatabaseAsync,
@@ -79,4 +74,5 @@ export const database = {
     setupLiftsAsync,
     getWorkout,
     insertSet,
-}
+};
+
