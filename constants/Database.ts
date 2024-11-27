@@ -2,9 +2,6 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabaseSync('local_storage.db');
 
-interface Workout {
-    id: number;
-}
 const setupDatabaseAsync = async (): Promise<void> => {
     try {
         await db.execAsync(
@@ -50,15 +47,31 @@ const insertSet = async (workoutId: number, set: number, liftId: number, numReps
     }
 };
 
+interface Set {
+    numSet: number;
+    liftId: number;
+    numReps: number;
+}
 // Define the type for setUserFunc
-type SetWorkoutFunc = (workouts: Workout[]) => void;
+type SetSetArrayFunc = (sets: Set[]) => void;
 
-const getWorkout = async (setWorkoutFunc: SetWorkoutFunc): Promise<void> => {
+const getWorkout = async (workoutId: number, setSetArrayFunc: SetSetArrayFunc): Promise<void> => {
     try {
-        const result = await db.execAsync('select * from users');
-        setWorkoutFunc(result.rows._array as Workout[]);
-    } catch (error) {
-        console.log("db error load users");
+        const data = db?.getAllSync(
+            `SELECT * FROM lifts WHERE workoutId IS $workoutId ORDER BY numSet, liftID`,
+            { $workoutId: workoutId },
+        );
+        if (data) {
+            const sets: Set[] = data.map((row: any) => ({
+                numSet: row.numSet,
+                liftId: row.liftId,
+                numReps: row.numReps
+            }));
+            setSetArrayFunc(sets);
+        }
+    }
+    catch (error) {
+        console.log("db error load workout");
         console.log(error);
     }
 };
@@ -66,7 +79,6 @@ const getWorkout = async (setWorkoutFunc: SetWorkoutFunc): Promise<void> => {
 export const database = {
     setupDatabaseAsync,
     dropDatabaseTablesAsync,
-    setupLiftsAsync,
     getWorkout,
     insertSet,
 };
