@@ -9,7 +9,6 @@ export default function useDatabase(): boolean {
             try {
                 await database.dropDatabaseTablesAsync();
                 await database.setupDatabaseAsync();
-                await database.setupLiftsAsync();
 
                 setDBLoadingComplete(true);
             } catch (e) {
@@ -24,8 +23,7 @@ export default function useDatabase(): boolean {
 }
 
 interface LiftProps {
-    liftId: number;
-    numReps: number;
+    workoutId: number;
     children: ReactNode;
 }
 
@@ -36,9 +34,8 @@ interface LiftsContextType {
 
 export const LiftsContext = createContext<LiftsContextType | undefined>(undefined);
 
-export const LiftsContextProvider: FC<LiftProps> = ({ liftId, numReps, children }) => {
+export const LiftsContextProvider: FC<LiftProps> = ({ workoutId, children }) => {
     const [numRepsState, setNumReps] = useState<number>(numReps);
-    const [users, setUsers] = useState<any[]>([]);
 
     useEffect(() => {
         refreshUsers();
