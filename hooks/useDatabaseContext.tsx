@@ -37,22 +37,18 @@ export const LiftsContext = createContext<LiftsContextType | undefined>(undefine
 export const LiftsContextProvider: FC<LiftProps> = ({ workoutId, children }) => {
     const [numRepsState, setNumReps] = useState<number>(numReps);
 
-    useEffect(() => {
-        refreshUsers();
-    }, []);
-
-    const addNewUser = async (userName: string): Promise<void> => {
+    const insertSet = async (userName: string): Promise<void> => {
         return database.insertSet(userName, refreshUsers);
     };
 
-    const refreshUsers = async (): Promise<void> => {
-        const usersList = await database.getWorkout(0);
-        setUsers(usersList);
+    const getWorkout = async (): Promise<void> => {
+        const setList = await database.getWorkout(0);
+        getWorkout(setList);
     };
 
     const liftsContext: LiftsContextType = {
-        users,
-        addNewUser,
+        workoutId,
+        dbHandle,
     };
 
     return <LiftsContext.Provider value={liftsContext}>{children}</LiftsContext.Provider>;
