@@ -24,3 +24,29 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## To-Do
+- [ ] Features
+    - [ ] Pre workout
+        - [ ] target number per week
+        - [ ] ladders
+    - [ ] Workout
+        - [ ] variables for assist weight
+        - [ ] set timer
+        - [ ] break timer
+        - [ ] one more?
+        - [ ] recommended set based on data
+    - [ ] Post-workout
+        - [ ] user data 
+            - [ ] keep local only?
+            - [ ] dump to file and reimport?
+            - [ ] cloud
+                - [ ] auth
+                - [ ] pricing?
+            - [ ] ToS?
+        - [ ] show stats
+        - [ ] github like calendar
+        - [ ] how many more sets for weekly goal
+    - [ ] Debug stuff
+        - [ ] reset app flow button
+
